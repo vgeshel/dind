@@ -84,11 +84,12 @@ rm -rf /var/run/docker.pid
 
 # If we were given a PORT environment variable, start as a simple daemon;
 # otherwise, spawn a shell as well
+DOCKER_OUT=${DOCKER_OUT:-/var/log/docker.log}
 if [ "$PORT" ]
 then
 	exec docker $DOCKER_OPTS -d -H 0.0.0.0:$PORT
 else
 
-	docker $DOCKER_OPTS -d &
+	docker $DOCKER_OPTS -d > $DOCKER_OUT 2>&1 &
 	exec bash $*
 fi
